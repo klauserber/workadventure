@@ -26,7 +26,7 @@ import Container = Phaser.GameObjects.Container;
 import Sprite = Phaser.GameObjects.Sprite;
 import DOMElement = Phaser.GameObjects.DOMElement;
 
-const playerNameY = -25;
+const playerNameY = -41;
 const interactiveRadius = 35;
 
 export abstract class Character extends Container implements OutlineableInterface {
@@ -138,8 +138,8 @@ export abstract class Character extends Container implements OutlineableInterfac
             },
         });
 
-        this.talkIcon = new TalkIcon(scene, 0, -45);
-        this.speakerIcon = new SpeakerIcon(scene, 0, -45);
+        this.talkIcon = new TalkIcon(scene, 0, -61);
+        this.speakerIcon = new SpeakerIcon(scene, 0, -61);
         this.add([this.talkIcon, this.speakerIcon]);
 
         if (isClickable) {
@@ -170,7 +170,7 @@ export abstract class Character extends Container implements OutlineableInterfac
         this.getBody().setCollideWorldBounds(true);
         this.setSize(16, 16);
         this.getBody().setSize(16, 16); //edit the hitbox to better match the character model
-        this.getBody().setOffset(0, 8);
+        this.getBody().setOffset(0, -8);
         this.setDepth(0);
     }
 
@@ -279,6 +279,7 @@ export abstract class Character extends Container implements OutlineableInterfac
                 throw new CharacterTextureError(`Texture "${texture}" not found`);
             }
             const sprite = new Sprite(this.scene, 0, 0, texture, frame);
+            sprite.setOrigin(0.5, 1);
             this.add(sprite);
             getPlayerAnimations(texture).forEach((d) => {
                 if (!this.scene.anims.exists(d.key)) {
@@ -346,7 +347,7 @@ export abstract class Character extends Container implements OutlineableInterfac
         }
         this.playAnimation(this._lastDirection, true);
 
-        this.setDepth(this.y + 16);
+        this.setDepth(this.y);
 
         if (this.companion) {
             this.companion.setTarget(this.x, this.y, this._lastDirection);
